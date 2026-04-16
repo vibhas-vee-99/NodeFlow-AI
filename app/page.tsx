@@ -14,6 +14,7 @@ import ReactFlow, {
   OnEdgesChange,
   Panel,
 } from "reactflow";
+// FIX: Added missing reactflow CSS import — without this, nodes/edges render unstyled
 import "reactflow/dist/style.css";
 
 import Sidebar from "@/components/Sidebar";
