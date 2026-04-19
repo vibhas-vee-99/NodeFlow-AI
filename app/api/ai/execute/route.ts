@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { AzureOpenAI } from "openai";
+import OpenAI from "openai";
 
 // Helper function to replace template variables
 function replaceTemplateVariables(text: string, input: any): string {
@@ -37,28 +37,20 @@ export async function POST(request: NextRequest) {
   try {
     const { type, config, input } = await request.json();
 
-    if (
-      !process.env.AZURE_OPENAI_API_KEY ||
-      !process.env.AZURE_OPENAI_ENDPOINT ||
-      !process.env.AZURE_OPENAI_DEPLOYMENT_ID
-    ) {
+
+    if (!process.env.GROQ_API_KEY) {
       return NextResponse.json(
-        {
-          error:
-            "Azure OpenAI credentials not configured. Add AZURE_OPENAI_API_KEY, AZURE_OPENAI_ENDPOINT, and AZURE_OPENAI_DEPLOYMENT_ID to .env",
-        },
+        { error: "GROQ_API_KEY not configured in .env" },
         { status: 500 }
       );
     }
 
-    // Initialize Azure OpenAI client inside the handler
-    const openai = new AzureOpenAI({
-      apiKey: process.env.AZURE_OPENAI_API_KEY,
-      endpoint: process.env.AZURE_OPENAI_ENDPOINT,
-      apiVersion: "2024-08-01-preview",
+    const openai = new OpenAI({
+      apiKey: process.env.GROQ_API_KEY,
+      baseURL: "https://api.groq.com/openai/v1",
     });
 
-    const deploymentId = process.env.AZURE_OPENAI_DEPLOYMENT_ID;
+    const deploymentId = "llama-3.3-70b-versatile";
 
     let result;
 
@@ -118,7 +110,7 @@ export async function POST(request: NextRequest) {
 async function executeTextGenerator(
   config: any,
   input: any,
-  openai: AzureOpenAI,
+  openai: OpenAI,
   deploymentId: string
 ) {
   let { prompt, temperature, maxTokens } = config;
@@ -155,7 +147,7 @@ async function executeTextGenerator(
 async function executeAnalyzer(
   config: any,
   input: any,
-  openai: AzureOpenAI,
+  openai: OpenAI,
   deploymentId: string
 ) {
   let { text, analysisType } = config;
@@ -198,7 +190,7 @@ async function executeAnalyzer(
 async function executeChatbot(
   config: any,
   input: any,
-  openai: AzureOpenAI,
+  openai: OpenAI,
   deploymentId: string
 ) {
   let { systemPrompt, userMessage, personality } = config;
@@ -213,9 +205,8 @@ async function executeChatbot(
     concise: "Respond with brief, to-the-point answers.",
   };
 
-  const fullSystemPrompt = `${systemPrompt}\n\n${
-    personalityPrompts[personality as keyof typeof personalityPrompts] || ""
-  }`;
+  const fullSystemPrompt = `${systemPrompt}\n\n${personalityPrompts[personality as keyof typeof personalityPrompts] || ""
+    }`;
 
   const completion = await openai.chat.completions.create({
     model: deploymentId,
@@ -236,7 +227,7 @@ async function executeChatbot(
 async function executeDataExtractor(
   config: any,
   input: any,
-  openai: AzureOpenAI,
+  openai: OpenAI,
   deploymentId: string
 ) {
   let { text, schema } = config;

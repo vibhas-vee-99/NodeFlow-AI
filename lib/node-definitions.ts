@@ -103,7 +103,7 @@ export const nodeDefinitions: Record<string, NodeDefinition> = {
   aiTextGenerator: {
     type: "aiTextGenerator",
     label: "AI Text Generator",
-    description: "Generate text using Azure OpenAI",
+    description: "Generate text using Groq (LLaMA)",
     category: "ai",
     icon: Sparkles,
     color: "bg-gradient-to-r from-pink-500 to-purple-500",

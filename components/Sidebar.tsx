@@ -90,7 +90,7 @@ export default function Sidebar({ onExecute, isExecuting }: SidebarProps) {
             <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
                 <p className="text-xs text-blue-800 dark:text-blue-200">
                     <strong>Tip:</strong> Drag nodes onto the canvas and connect them to
-                    create workflows. AI nodes require Azure OpenAI credentials in .env
+                    create workflows. AI nodes require OpenAI credentials in .env
                     file.
                 </p>
             </div>
