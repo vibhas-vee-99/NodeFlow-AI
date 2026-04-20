@@ -31,7 +31,7 @@ export const useWorkflowStore = create<WorkflowState>((set, get) => ({
 
   addEdge: (edge: WorkflowEdge) => {
     set((state) => ({
-      edges: addReactFlowEdge(edge as Connection, state.edges),
+    edges: addReactFlowEdge(edge as unknown as Connection, state.edges),
     }));
   },
 

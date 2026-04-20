@@ -26,9 +26,11 @@ export interface WorkflowNode extends Node {
   data: NodeData;
 }
 
-export interface WorkflowEdge extends Edge {
+export type WorkflowEdge = Edge & {
   id: string;
-}
+  source: string;
+  target: string;
+};
 
 export interface WorkflowState {
   nodes: WorkflowNode[];
