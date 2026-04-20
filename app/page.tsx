@@ -13,6 +13,7 @@ import ReactFlow, {
   OnNodesChange,
   OnEdgesChange,
   Panel,
+  EdgeRemoveChange,
 } from "reactflow";
 // FIX: Added missing reactflow CSS import — without this, nodes/edges render unstyled
 import "reactflow/dist/style.css";
@@ -83,7 +84,7 @@ export default function Home() {
       changes.forEach((change) => {
         if (change.type === "remove") {
           const { edges: currentEdges } = useWorkflowStore.getState();
-        setEdges(currentEdges.filter((edge) => edge.id !== (change as any).id));
+      setEdges(currentEdges.filter((edge) => edge.id !== (change as EdgeRemoveChange).id));
         }
       });
     },
