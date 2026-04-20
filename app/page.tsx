@@ -83,7 +83,7 @@ export default function Home() {
       changes.forEach((change) => {
         if (change.type === "remove") {
           const { edges: currentEdges } = useWorkflowStore.getState();
-          setEdges(currentEdges.filter((edge) => edge.id !== change.id));
+        setEdges(currentEdges.filter((edge) => edge.id !== (change as any).id));
         }
       });
     },
