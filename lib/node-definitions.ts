@@ -314,14 +314,14 @@ export const nodeDefinitions: Record<string, NodeDefinition> = {
   sendEmail: {
     type: "sendEmail",
     label: "Send Email",
-    description: "Send email (simulated)",
+    description: "Send email ",
     category: "action",
     icon: Mail,
     color: "bg-red-500",
     defaultConfig: {
       to: "user@example.com",
       subject: "Hello",
-      body: "Email body",
+      body: "{{input.generatedText}}",
     },
     configFields: [
       {

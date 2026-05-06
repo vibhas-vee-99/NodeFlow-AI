@@ -16,7 +16,7 @@ function CustomNode({ data, id, selected }: NodeProps<WorkflowNode["data"]>) {
 
   return (
     <div
-      className={`
+      className={`_
         relative bg-white dark:bg-gray-800 rounded-lg shadow-lg border-2 transition-all
         ${selected ? "border-blue-500" : "border-gray-200 dark:border-gray-700"}
         ${data.isExecuting ? "ring-2 ring-blue-400" : ""}

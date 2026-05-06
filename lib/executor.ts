@@ -135,7 +135,7 @@ export class WorkflowExecutor {
         return this.executeDataTransform(config, input);
 
       case "sendEmail":
-        return this.executeSendEmail(config, input);
+        return await this.executeSendEmail(config, input);
 
       default:
         return {
@@ -223,30 +223,30 @@ export class WorkflowExecutor {
     }
   }
 
-  private executeSendEmail(
-    config: Record<string, any>,
-    input: any
-  ): NodeExecutionResult {
-    // Simulated email sending
-    let { to, subject, body } = config;
+private async executeSendEmail(
+  config: Record<string, any>,
+  input: any
+): Promise<NodeExecutionResult> {
+  let { to, subject, body } = config;
 
-    // Process template variables
-    to = replaceTemplateVariables(to, input);
-    subject = replaceTemplateVariables(subject, input);
-    body = replaceTemplateVariables(body, input);
+  to = replaceTemplateVariables(to, input);
+  subject = replaceTemplateVariables(subject, input);
+  body = replaceTemplateVariables(body, input);
 
-    return {
-      success: true,
-      output: {
-        sent: true,
-        to,
-        subject,
-        body,
-        sentAt: new Date().toISOString(),
-        message: "✉️ Email sent successfully (simulated)",
-      },
-    };
+  const response = await fetch("/api/send-email", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ to, subject, body }),
+  });
+
+  const result = await response.json();
+
+  if (!response.ok) {
+    return { success: false, error: result.error || "Email send failed" };
   }
+
+  return { success: true, output: result };
+}
 
   private async executeLogicNode(
     config: Record<string, any>,
